@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Insta Clone</string>
+    <string name="str_instagram">Instagram</string>
+    <string name="str_email">Email</string>
+    <string name="str_password">Password</string>
+    <string name="str_forgot_password">Forgot Password?</string>
+    <string name="str_log_in">Log in</string>
+    <string name="str_sign_up">Sign up.</string>
+    <string name="str_don_t_have_an_account">Don’t have an account?</string>
+</resources>
