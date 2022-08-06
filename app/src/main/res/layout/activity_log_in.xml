@@ -16,14 +16,13 @@
         android:fontFamily="@font/billabong"
         android:text="@string/str_instagram"
         android:textColor="@color/black"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+        android:textSize="48sp" />
 
     <EditText
-        android:layout_marginTop="40dp"
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:background="@drawable/view_rounded_corner"
         android:backgroundTint="#FAFAFA"
         android:hint="@string/str_email"
