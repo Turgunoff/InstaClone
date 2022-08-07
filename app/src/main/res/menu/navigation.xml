@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@mipmap/outline_home_black_24"
+        android:menuCategory="secondary"
+        android:title="@string/str_home" />
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@mipmap/outline_search_black_24"
+        android:menuCategory="secondary"
+        android:title="@string/str_search" />
+    <item
+        android:id="@+id/navigation_upload"
+        android:icon="@mipmap/add_new_64"
+        android:menuCategory="secondary"
+        android:title="@string/str_add" />
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@mipmap/outline_favorite_border_black_24"
+        android:menuCategory="secondary"
+        android:title="@string/str_favorite" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@mipmap/outline_account_circle_black_24"
+        android:menuCategory="secondary"
+        android:title="@string/str_account" />
+</menu>
