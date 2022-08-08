@@ -101,5 +101,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="str_write_a_caption">Write a caption</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

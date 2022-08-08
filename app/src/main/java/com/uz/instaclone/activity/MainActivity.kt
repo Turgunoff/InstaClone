@@ -7,9 +7,11 @@ import com.uz.instaclone.adapter.ViewPagerAdapter
 import com.uz.instaclone.fragment.*
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(),UploadFragment.UploadListener,HomeFragment.HomeListener {
     val TAG = MainActivity::class.java.simpleName
     var index = 0
+    lateinit var homeFragment: HomeFragment
+    lateinit var uploadFragment: UploadFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +47,33 @@ class MainActivity : BaseActivity() {
             }
 
         })
+        homeFragment = HomeFragment()
+        uploadFragment = UploadFragment()
         setupViewPager(viewPager)
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(HomeFragment())
+        adapter.addFragment(homeFragment)
         adapter.addFragment(SearchFragment())
-        adapter.addFragment(UploadFragment())
+        adapter.addFragment(uploadFragment)
         adapter.addFragment(FavoriteFragment())
         adapter.addFragment(ProfileFragment())
         viewPager.adapter = adapter
+    }
+
+    override fun scrollToUpload() {
+        index = 2
+        scrollByIndex(index)
+    }
+
+    override fun scrollToHome() {
+        index = 0
+        scrollByIndex(index)
+    }
+
+    private fun scrollByIndex(index:Int){
+        viewPager.setCurrentItem(index)
+        bottomNavigationView.getMenu().getItem(index).setChecked(true);
     }
 }
