@@ -82,12 +82,11 @@ class UploadFragment : BaseFragment() {
     }
 
     private fun pickFishBunPhoto() {
-        FishBun.with(this)
+        FishBun.with(this@UploadFragment)
             .setImageAdapter(GlideAdapter())
             .setMaxCount(1)
             .setMinCount(1)
             .setSelectedImages(allPhotos)
-            .startAlbum()
     }
     private val photoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

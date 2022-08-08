@@ -7,7 +7,7 @@ import com.uz.instaclone.adapter.ViewPagerAdapter
 import com.uz.instaclone.fragment.*
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(),UploadFragment.UploadListener,HomeFragment.HomeListener {
+class MainActivity : BaseActivity() {
     val TAG = MainActivity::class.java.simpleName
     var index = 0
     lateinit var homeFragment: HomeFragment
@@ -62,15 +62,15 @@ class MainActivity : BaseActivity(),UploadFragment.UploadListener,HomeFragment.H
         viewPager.adapter = adapter
     }
 
-    override fun scrollToUpload() {
-        index = 2
-        scrollByIndex(index)
-    }
-
-    override fun scrollToHome() {
-        index = 0
-        scrollByIndex(index)
-    }
+//    override fun scrollToUpload() {
+//        index = 2
+//        scrollByIndex(index)
+//    }
+//
+//    override fun scrollToHome() {
+//        index = 0
+//        scrollByIndex(index)
+//    }
 
     private fun scrollByIndex(index:Int){
         viewPager.setCurrentItem(index)
