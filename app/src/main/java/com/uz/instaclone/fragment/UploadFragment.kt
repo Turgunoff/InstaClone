@@ -26,10 +26,10 @@ class UploadFragment : BaseFragment() {
     lateinit var fl_photo: FrameLayout
     lateinit var iv_photo: ImageView
     lateinit var et_caption: EditText
-    private var listener: UploadListener? = null
+//    private var listener: UploadListener? = null
 
-    var pickedPhoto: Uri? = null
-    var allPhotos = ArrayList<Uri>()
+//    var pickedPhoto: Uri? = null
+//    var allPhotos = ArrayList<Uri>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,23 +40,23 @@ class UploadFragment : BaseFragment() {
         initViews(view)
         return view
     }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = if (context is UploadListener) {
-            context
-        } else {
-            throw RuntimeException("$context must implement FirstListener")
-        }
-    }
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        listener = if (context is UploadListener) {
+//            context
+//        } else {
+//            throw RuntimeException("$context must implement FirstListener")
+//        }
+//    }
+//    override fun onDetach() {
+//        super.onDetach()
+//        listener = null
+//    }
 
 
     private fun initViews(view: View) {
         val fl_view = view.findViewById<FrameLayout>(R.id.fl_view)
-        setViewHeight(fl_view)
+//        setViewHeight(fl_view)
         et_caption = view.findViewById(R.id.et_caption)
         fl_photo = view.findViewById(R.id.fl_photo)
         iv_photo = view.findViewById(R.id.iv_photo)
@@ -65,13 +65,13 @@ class UploadFragment : BaseFragment() {
         val iv_upload = view.findViewById<ImageView>(R.id.iv_upload)
 
         iv_pick.setOnClickListener {
-            pickFishBunPhoto()
+//            pickFishBunPhoto()
         }
         iv_close.setOnClickListener {
-            hidePickedPhoto()
+//            hidePickedPhoto()
         }
         iv_upload.setOnClickListener {
-            uploadNewPost()
+//            uploadNewPost()
         }
     }
 
@@ -81,41 +81,41 @@ class UploadFragment : BaseFragment() {
         view.setLayoutParams(params)
     }
 
-    private fun pickFishBunPhoto() {
-        FishBun.with(this@UploadFragment)
-            .setImageAdapter(GlideAdapter())
-            .setMaxCount(1)
-            .setMinCount(1)
-            .setSelectedImages(allPhotos)
-    }
-    private val photoLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                allPhotos =
-                    it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
-                pickedPhoto = allPhotos.get(0)
-                showPickedPhoto()
-            }
-        }
+//    private fun pickFishBunPhoto() {
+//        FishBun.with(this@UploadFragment)
+//            .setImageAdapter(GlideAdapter())
+//            .setMaxCount(1)
+//            .setMinCount(1)
+//            .setSelectedImages(allPhotos)
+//    }
+//    private val photoLauncher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            if (it.resultCode == Activity.RESULT_OK) {
+//                allPhotos =
+//                    it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
+//                pickedPhoto = allPhotos.get(0)
+//                showPickedPhoto()
+//            }
+//        }
 
-    private fun uploadNewPost() {
-        val caption = et_caption.text.toString().trim()
-        if (caption.isNotEmpty() && pickedPhoto != null) {
-            listener!!.scrollToHome()
-            et_caption.text.clear()
-        }
-    }
+//    private fun uploadNewPost() {
+//        val caption = et_caption.text.toString().trim()
+//        if (caption.isNotEmpty() && pickedPhoto != null) {
+//            listener!!.scrollToHome()
+//            et_caption.text.clear()
+//        }
+//    }
 
-    private fun showPickedPhoto() {
-        fl_photo.visibility = View.VISIBLE
-        iv_photo.setImageURI(pickedPhoto)
-    }
+//    private fun showPickedPhoto() {
+//        fl_photo.visibility = View.VISIBLE
+//        iv_photo.setImageURI(pickedPhoto)
+//    }
 
-    private fun hidePickedPhoto() {
-        pickedPhoto = null
-        fl_photo.visibility = View.GONE
-    }
-    interface UploadListener {
-        fun scrollToHome()
-    }
+//    private fun hidePickedPhoto() {
+//        pickedPhoto = null
+//        fl_photo.visibility = View.GONE
+//    }
+//    interface UploadListener {
+//        fun scrollToHome()
+//    }
 }

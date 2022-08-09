@@ -10,12 +10,13 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="10dp">
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="centerCrop"
             android:padding="2dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
             app:shapeAppearanceOverlay="@style/circle"
             app:strokeColor="@color/color_blue"
@@ -50,8 +51,8 @@
 
         <ImageView
             android:id="@+id/iv_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@mipmap/ic_more" />
 
     </LinearLayout>
@@ -64,7 +65,8 @@
             android:id="@+id/iv_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/img1" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,14 +76,14 @@
 
         <ImageView
             android:id="@+id/iv_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@mipmap/ic_favorite" />
 
         <ImageView
             android:id="@+id/iv_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/ic_share" />
     </LinearLayout>

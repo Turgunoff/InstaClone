@@ -1,6 +1,5 @@
 package com.uz.instaclone.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.uz.instaclone.R
-import com.uz.instaclone.fragment.HomeFragment
+import com.uz.instaclone.fragment.FavoriteFragment
 import com.uz.instaclone.model.Post
 
-class HomeAdapter(var fragment: HomeFragment, var items: ArrayList<Post>) : BaseAdapter() {
+
+/**
+ * Created by Eldor Turgunov on 09.08.2022.
+ * Insta Clone
+ * eldorturgunov777@gmail.com
+ */
+class FavoriteAdapter(var fragment: FavoriteFragment, var items: ArrayList<Post>) : BaseAdapter() {
 
     override fun getItemCount(): Int {
         return items.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_post_home, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_post_favorite, parent, false)
         return PostViewHolder(view)
     }
 

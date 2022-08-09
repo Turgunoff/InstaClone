@@ -15,8 +15,8 @@
             android:id="@+id/iv_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="centerCrop"
             android:padding="2dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
             app:shapeAppearanceOverlay="@style/circle"
             app:strokeColor="@color/color_blue"
@@ -44,15 +44,15 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/str_favorite"
+                android:text="@string/str_home"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@mipmap/ic_more" />
 
     </LinearLayout>
