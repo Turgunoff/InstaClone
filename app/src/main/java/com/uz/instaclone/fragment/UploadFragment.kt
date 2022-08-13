@@ -1,6 +1,5 @@
 package com.uz.instaclone.fragment
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.uz.instaclone.R
@@ -90,24 +88,25 @@ class UploadFragment : BaseFragment() {
             .setMinCount(1)
             .setSelectedImages(allPhotos)
             .startAlbum()
-//            .startAlbumWithActivityResultCallback(photoLauncher)
     }
 
-    private val photoLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                allPhotos =
-                    it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            FishBun.FISHBUN_REQUEST_CODE -> {
+                allPhotos = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
                 pickedPhoto = allPhotos.get(0)
                 showPickedPhoto()
             }
         }
+    }
 
     private fun uploadNewPost() {
         val caption = et_caption.text.toString().trim()
-//        if (caption.isNotEmpty() && pickedPhoto != null) {
-        if (caption.isNotEmpty()) {
+        if (caption.isNotEmpty() && pickedPhoto != null) {
             listener!!.scrollToHome()
+            allPhotos.clear()
             et_caption.text.clear()
         }
     }
@@ -119,6 +118,7 @@ class UploadFragment : BaseFragment() {
 
     private fun hidePickedPhoto() {
         pickedPhoto = null
+        allPhotos.clear()
         fl_photo.visibility = View.GONE
     }
 
