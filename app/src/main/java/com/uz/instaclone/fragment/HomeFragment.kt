@@ -19,7 +19,8 @@ import com.uz.instaclone.model.Post
 class HomeFragment : BaseFragment() {
     lateinit var recyclerView: RecyclerView
     var items: ArrayList<Post> = ArrayList()
-
+    private var listener: HomeListener? = null
+    lateinit var iv_camera: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,29 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = if (context is HomeListener) {
+            context
+        } else {
+            throw RuntimeException("$context must implement FirstListener")
+        }
+    }
+
+    interface HomeListener {
+        fun scrollToUpload()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
     private fun initViews(view: View) {
+        iv_camera = view.findViewById(R.id.iv_camera)
+        iv_camera.setOnClickListener {
+            listener!!.scrollToUpload()
+        }
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(activity, 1)
 
