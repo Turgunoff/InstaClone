@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +17,10 @@ import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.uz.instaclone.R
 import com.uz.instaclone.activity.MainActivity
 import com.uz.instaclone.adapter.ProfileAdapter
+import com.uz.instaclone.manager.AuthManager
 import com.uz.instaclone.model.Post
 import com.uz.instaclone.utils.Logger
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 /**
  * This is the Profile page, where profile settings can be made
@@ -25,6 +28,7 @@ import com.uz.instaclone.utils.Logger
 class ProfileFragment : BaseFragment() {
     val TAG = ProfileFragment::class.java.simpleName
     lateinit var rv_profile: RecyclerView
+    lateinit var logOut: ImageView
     var allPhotos = ArrayList<Uri>()
     var pickedPhoto: Uri? = null
 
@@ -40,12 +44,17 @@ class ProfileFragment : BaseFragment() {
 
     private fun initViews(view: View) {
         rv_profile = view.findViewById(R.id.rv_profile)
+        logOut = view.findViewById(R.id.logOut)
         rv_profile.layoutManager = GridLayoutManager(activity, 2)
-        var iv_profile = view.findViewById<ShapeableImageView>(R.id.iv_profile)
+        val iv_profile = view.findViewById<ShapeableImageView>(R.id.iv_profile)
         iv_profile.setOnClickListener {
             pickFishBunPhoto()
         }
         refreshAdapter(loadPosts())
+        logOut.setOnClickListener {
+            AuthManager.signOut()
+            callSignInActivity(requireActivity())
+        }
     }
 
     private fun pickFishBunPhoto() {

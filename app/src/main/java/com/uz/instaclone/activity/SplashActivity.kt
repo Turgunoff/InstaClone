@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.WindowManager
 import com.uz.instaclone.R
+import com.uz.instaclone.manager.AuthManager
 
 class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +27,11 @@ class SplashActivity : BaseActivity() {
         object : CountDownTimer(1000, 1000) {
             override fun onTick(l: Long) {}
             override fun onFinish() {
-                startActivity(Intent(this@SplashActivity, LogInActivity::class.java))
-                finish()
-//                if (firebaseUser == null) {
-//                    callMainActivity(context)
-//                } else {
-//                    callLogInActivity(context)
-//                }
+                if (AuthManager.isSignedIn()) {
+                    callMainActivity(this@SplashActivity)
+                } else {
+                    callLogInActivity(this@SplashActivity)
+                }
             }
         }.start()
     }

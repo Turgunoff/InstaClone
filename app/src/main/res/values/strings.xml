@@ -106,5 +106,14 @@
     <string name="str_posts">Posts</string>
     <string name="str_followers">Followers</string>
     <string name="str_following">Following</string>
+    <string name="str_successfully">Successfully</string>
+    <string name="str_log_in_failed">Log in Failed</string>
+    <string name="str_full_name">Full Name</string>
+    <string name="str_confirm_password">Confirm Password</string>
+    <string name="str_registration">Registration</string>
+    <string name="str_sign_in">Sign In</string>
+    <string name="str_already_have_an_account">Already have an account?</string>
+    <string name="str_registration_failed">Registration failed</string>
+    <string name="str_registration_success">Registration Success</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
