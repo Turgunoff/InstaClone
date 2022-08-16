@@ -8,7 +8,7 @@ package com.uz.instaclone.model
  */
 class User {
     var uid: String = ""
-    var fullName: String = ""
+    var fullname: String = ""
     var email: String = ""
     var password: String = ""
     var userImg: String = ""
@@ -16,18 +16,18 @@ class User {
 
     constructor(fullName: String, email: String) {
         this.email = email
-        this.fullName = fullName
+        this.fullname = fullName
     }
 
     constructor(fullName: String, email: String, userImg: String) {
         this.email = email
-        this.fullName = fullName
+        this.fullname = fullName
         this.userImg = userImg
     }
 
     constructor(fullName: String, email: String, password: String, userImg: String) {
         this.email = email
-        this.fullName = fullName
+        this.fullname = fullName
         this.password = password
         this.userImg = userImg
     }

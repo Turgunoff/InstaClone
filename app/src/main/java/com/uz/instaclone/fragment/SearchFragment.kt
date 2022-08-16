@@ -3,7 +3,6 @@ package com.uz.instaclone.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uz.instaclone.R
 import com.uz.instaclone.adapter.SearchAdapter
+import com.uz.instaclone.manager.AuthManager
+import com.uz.instaclone.manager.DBManager
+import com.uz.instaclone.manager.handler.DBUsersHandler
 import com.uz.instaclone.model.User
 
 /**
@@ -49,53 +51,35 @@ class SearchFragment : BaseFragment() {
                 usersByKeyword(keyword)
             }
         })
-        refreshAdapter(loadUsers())
-    }
-
-    private fun usersByKeyword(keyword: String) {
-        if (keyword.isEmpty())
-            refreshAdapter(items)
-
-        users.clear()
-        for (user in items)
-            if (user.fullName.toLowerCase().startsWith(keyword.toLowerCase()))
-                users.add(user)
-
-        refreshAdapter(users)
-
-    }
-
-    private fun loadUsers(): ArrayList<User> {
-        items = ArrayList<User>()
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        items.add(User("Eldor", "eldor@gmail.com"))
-        items.add(User("Farrux", "eldor@gmail.com"))
-        items.add(User("Shoxrux", "eldor@gmail.com"))
-        items.add(User("Elyor", "eldor@gmail.com"))
-        return items
+        loadUsers()
     }
 
     private fun refreshAdapter(items: ArrayList<User>) {
         val adapter = SearchAdapter(this, items)
         rv_search.adapter = adapter
+    }
+
+    fun usersByKeyword(keyword: String) {
+        if (keyword.isEmpty())
+            refreshAdapter(items)
+
+        users.clear()
+        for (user in items)
+            if (user.fullname.toLowerCase().startsWith(keyword.toLowerCase()))
+                users.add(user)
+
+        refreshAdapter(users)
+    }
+
+    private fun loadUsers() {
+        DBManager.loadUsers(object : DBUsersHandler {
+            override fun onSuccess(users: ArrayList<User>) {
+                items.clear()
+                items.addAll(users)
+                refreshAdapter(items)
+            }
+            override fun onError(e: Exception) {
+            }
+        })
     }
 }

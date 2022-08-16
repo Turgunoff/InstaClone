@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.uz.instaclone.R
 import com.uz.instaclone.manager.AuthManager
+import com.uz.instaclone.manager.DBManager
 import com.uz.instaclone.manager.handler.AuthHandler
+import com.uz.instaclone.manager.handler.DBUserHandler
 import com.uz.instaclone.model.User
 import com.uz.instaclone.utils.Extensions.toast
 import kotlinx.android.synthetic.main.activity_registration.*
@@ -36,9 +38,8 @@ class RegistrationActivity : BaseActivity() {
         AuthManager.signUp(user.email, user.password, object : AuthHandler {
             override fun onSuccess(uid: String) {
                 user.uid = uid
-                dissmisLoading()
                 toast(getString(R.string.str_registration_success))
-                callMainActivity(context)
+                storeUserToDB(user)
             }
 
             override fun onError(exception: Exception?) {
@@ -46,6 +47,20 @@ class RegistrationActivity : BaseActivity() {
                 toast(getString(R.string.str_registration_failed))
             }
 
+        })
+    }
+
+    private fun storeUserToDB(user: User) {
+        DBManager.storeUser(user, object : DBUserHandler {
+
+            override fun onSuccess(user: User?) {
+                dissmisLoading()
+                callMainActivity(context)
+            }
+
+            override fun onError(e: Exception?) {
+                TODO("Not yet implemented")
+            }
         })
     }
 }

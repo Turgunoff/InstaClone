@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.uz.instaclone.R
 import com.uz.instaclone.fragment.SearchFragment
@@ -41,8 +42,12 @@ class SearchAdapter(var fragment: SearchFragment, var items: ArrayList<User>) : 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val user: User = items[position]
         if (holder is UserViewHolder) {
-            holder.tv_fullname.text = user.fullName
+            holder.tv_fullname.text = user.fullname
             holder.tv_email.text = user.email
+            Glide.with(fragment).load(user.userImg)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_person)
+                .into(holder.iv_profile)
         }
     }
 

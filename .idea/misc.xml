@@ -10,7 +10,7 @@
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_favorite.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_home.xml" value="0.165625" />
-        <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_profile.xml" value="0.14859437751004015" />
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_upload.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Turonbank/AndroidStudioProjects/InstaClone/app/src/main/res/layout/item_post_home.xml" value="0.11979166666666667" />
@@ -19,9 +19,8 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/drawable/item_icon_tint.xml" value="0.1345" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_log_in.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_registration.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_registration.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/activity_splash.xml" value="0.22" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/custom_progress_dialog.xml" value="0.209375" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_favorite.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_home.xml" value="0.29506437768240346" />
         <entry key="..\:/Users/user/AndroidStudioProjects/InstaClone/app/src/main/res/layout/fragment_profile.xml" value="0.22604166666666667" />
