@@ -1,5 +1,6 @@
 package com.uz.instaclone.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,8 +14,19 @@ import android.widget.ImageView
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.uz.instaclone.R
+import com.uz.instaclone.manager.AuthManager
+import com.uz.instaclone.manager.DBManager
+import com.uz.instaclone.manager.StorageManager
+import com.uz.instaclone.manager.handler.DBPostHandler
+import com.uz.instaclone.manager.handler.DBUserHandler
+import com.uz.instaclone.manager.handler.StorageHandler
+import com.uz.instaclone.model.Post
+import com.uz.instaclone.model.User
 import com.uz.instaclone.utils.Utils
 import kotlinx.android.synthetic.main.fragment_upload.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -105,10 +117,77 @@ class UploadFragment : BaseFragment() {
     private fun uploadNewPost() {
         val caption = et_caption.text.toString().trim()
         if (caption.isNotEmpty() && pickedPhoto != null) {
-            listener!!.scrollToHome()
-            allPhotos.clear()
-            et_caption.text.clear()
+            uploadPostPhoto(caption, pickedPhoto!!)
         }
+    }
+
+    private fun uploadPostPhoto(caption: String, pickedPhoto: Uri) {
+        showLoading(requireActivity())
+        StorageManager.uploadPostPhoto(pickedPhoto, object : StorageHandler {
+            override fun onSuccess(imgUrl: String) {
+                val post = Post(caption, imgUrl)
+                post.currentDate = getCurrentTime()
+
+                val uid = AuthManager.currentUser()!!.uid
+
+                DBManager.loadUser(uid, object : DBUserHandler {
+                    override fun onSuccess(user: User?) {
+                        post.uid = uid
+                        post.fullname = user!!.fullname
+                        post.userImg = user.userImg
+                        storePostToDB(post)
+                    }
+
+                    override fun onError(e: Exception?) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+            }
+
+            override fun onError(exception: Exception?) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+    }
+
+    private fun storePostToDB(post: Post) {
+        DBManager.storePosts(post, object : DBPostHandler {
+            override fun onSuccess(post: Post) {
+                storeFeedToDB(post)
+            }
+
+            override fun onError(e: Exception) {
+            }
+        })
+    }
+
+    private fun storeFeedToDB(post: Post) {
+        DBManager.storeFeeds(post, object : DBPostHandler {
+            override fun onSuccess(post: Post) {
+                dissmisLoading()
+                resetAll()
+                listener!!.scrollToHome()
+            }
+
+            override fun onError(e: Exception) {
+            }
+        })
+    }
+
+    private fun resetAll() {
+        allPhotos.clear()
+        et_caption.text.clear()
+        pickedPhoto = null
+        fl_photo.visibility = View.GONE
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getCurrentTime(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm")
+        return sdf.format(Date())
     }
 
     private fun showPickedPhoto() {

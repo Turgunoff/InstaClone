@@ -19,6 +19,7 @@ import com.uz.instaclone.adapter.ProfileAdapter
 import com.uz.instaclone.manager.AuthManager
 import com.uz.instaclone.manager.DBManager
 import com.uz.instaclone.manager.StorageManager
+import com.uz.instaclone.manager.handler.DBPostsHandler
 import com.uz.instaclone.manager.handler.DBUserHandler
 import com.uz.instaclone.manager.handler.StorageHandler
 import com.uz.instaclone.model.Post
@@ -37,6 +38,7 @@ class ProfileFragment : BaseFragment() {
     lateinit var iv_profile: ImageView
     lateinit var tv_fullname: TextView
     lateinit var tv_email: TextView
+    lateinit var tv_posts: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,7 @@ class ProfileFragment : BaseFragment() {
         iv_profile = view.findViewById(R.id.iv_profile)
         tv_fullname = view.findViewById(R.id.tv_fullname)
         tv_email = view.findViewById(R.id.tv_email)
+        tv_posts = view.findViewById(R.id.tv_posts)
 
         logOut = view.findViewById(R.id.logOut)
         rv_profile.layoutManager = GridLayoutManager(activity, 2)
@@ -66,8 +69,23 @@ class ProfileFragment : BaseFragment() {
             callSignInActivity(requireActivity())
         }
 
-        refreshAdapter(loadPosts())
         loadUserInfo()
+        loadMyPosts()
+    }
+
+    private fun loadMyPosts() {
+        val uid = AuthManager.currentUser()!!.uid
+        DBManager.loadPosts(uid, object : DBPostsHandler {
+            override fun onSuccess(posts: ArrayList<Post>) {
+                tv_posts.text = posts.size.toString()
+                refreshAdapter(posts)
+            }
+
+            override fun onError(e: java.lang.Exception) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun loadUserInfo() {
@@ -134,18 +152,5 @@ class ProfileFragment : BaseFragment() {
     private fun refreshAdapter(items: ArrayList<Post>) {
         val adadpter = ProfileAdapter(this, items)
         rv_profile.adapter = adadpter
-    }
-
-    private fun loadPosts(): ArrayList<Post> {
-        val items = ArrayList<Post>()
-        items.add(Post("https://images.unsplash.com/photo-1659519529276-a6a42aaa0b7b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1659259541374-22a6df2fee1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIxfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHBlcnNvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1659519529276-a6a42aaa0b7b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1659259541374-22a6df2fee1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIxfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHBlcnNvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"))
-        return items
     }
 }

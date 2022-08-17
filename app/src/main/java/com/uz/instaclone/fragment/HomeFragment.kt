@@ -11,14 +11,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uz.instaclone.R
 import com.uz.instaclone.adapter.HomeAdapter
+import com.uz.instaclone.manager.AuthManager
+import com.uz.instaclone.manager.DBManager
+import com.uz.instaclone.manager.handler.DBPostsHandler
 import com.uz.instaclone.model.Post
+import java.lang.Exception
 
 /**
  * This is the Home Page, where you and your friends will see posts
  */
 class HomeFragment : BaseFragment() {
     lateinit var recyclerView: RecyclerView
-    var items: ArrayList<Post> = ArrayList()
+    var feeds: ArrayList<Post> = ArrayList()
     private var listener: HomeListener? = null
     lateinit var iv_camera: ImageView
 
@@ -33,6 +37,44 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun initViews(view: View) {
+        iv_camera = view.findViewById(R.id.iv_camera)
+        iv_camera.setOnClickListener {
+            listener!!.scrollToUpload()
+        }
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(activity, 1)
+
+        loadMyFeeds()
+    }
+
+    private fun loadMyFeeds() {
+        showLoading(requireActivity())
+        val uid = AuthManager.currentUser()!!.uid
+        DBManager.loadFeeds(uid, object : DBPostsHandler {
+            override fun onSuccess(posts: ArrayList<Post>) {
+                dissmisLoading()
+                feeds.clear()
+                feeds.addAll(posts)
+                refreshAdapter(feeds)
+            }
+
+            override fun onError(e: Exception) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    fun refreshAdapter(items: ArrayList<Post>) {
+        val adapter = HomeAdapter(this, items)
+        recyclerView.adapter = adapter
+    }
+
+    interface HomeListener {
+        fun scrollToUpload()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = if (context is HomeListener) {
@@ -42,37 +84,8 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    interface HomeListener {
-        fun scrollToUpload()
-    }
-
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    private fun initViews(view: View) {
-        iv_camera = view.findViewById(R.id.iv_camera)
-        iv_camera.setOnClickListener {
-            listener!!.scrollToUpload()
-        }
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(activity, 1)
-
-//        val iv_camera = view.findViewById<ImageView>(R.id.iv_camera)
-//        iv_camera.setOnClickListener {
-//        }
-
-        refreshAdapter()
-    }
-
-    private fun refreshAdapter() {
-        val adapter = HomeAdapter(this, items)
-        recyclerView.adapter = adapter
-
-        items.add(Post("https://images.unsplash.com/photo-1659519529276-a6a42aaa0b7b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1659259541374-22a6df2fee1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIxfENEd3V3WEpBYkV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"))
-        items.add(Post("https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHBlcnNvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"))
     }
 }

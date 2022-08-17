@@ -1,8 +1,11 @@
 package com.uz.instaclone.manager
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uz.instaclone.manager.handler.DBPostHandler
+import com.uz.instaclone.manager.handler.DBPostsHandler
 import com.uz.instaclone.manager.handler.DBUserHandler
 import com.uz.instaclone.manager.handler.DBUsersHandler
+import com.uz.instaclone.model.Post
 import com.uz.instaclone.model.User
 
 /**
@@ -23,6 +26,27 @@ object DBManager {
     fun storeUser(user: User, handler: DBUserHandler) {
         database.collection(USER_PATH).document(user.uid).set(user).addOnSuccessListener {
             handler.onSuccess()
+        }.addOnFailureListener {
+            handler.onError(it)
+        }
+    }
+
+    fun storePosts(post: Post, handler: DBPostHandler) {
+        val reference = database.collection(USER_PATH).document(post.uid).collection(POST_PATH)
+        val id = reference.document().id
+        post.id = id
+
+        reference.document(post.id).set(post).addOnSuccessListener {
+            handler.onSuccess(post)
+        }.addOnFailureListener {
+            handler.onError(it)
+        }
+    }
+
+    fun storeFeeds(post: Post, handler: DBPostHandler) {
+        val reference = database.collection(USER_PATH).document(post.uid).collection(FEED_PATH)
+        reference.document(post.id).set(post).addOnSuccessListener {
+            handler.onSuccess(post)
         }.addOnFailureListener {
             handler.onError(it)
         }
@@ -66,6 +90,61 @@ object DBManager {
                     users.add(user)
                 }
                 handler.onSuccess(users)
+            } else {
+                handler.onError(it.exception!!)
+            }
+        }
+    }
+
+    fun loadFeeds(uid: String, handler: DBPostsHandler) {
+        val reference = database.collection(USER_PATH).document(uid).collection(FEED_PATH)
+        reference.get().addOnCompleteListener {
+            val posts = ArrayList<Post>()
+            if (it.isSuccessful) {
+                for (document in it.result!!) {
+                    val id = document.getString("id")
+                    val caption = document.getString("caption")
+                    val postImg = document.getString("postImg")
+                    val fullname = document.getString("fullname")
+                    val userImg = document.getString("userImg")
+                    val currentDate = document.getString("currentDate")
+                    val userId = document.getString("uid")
+
+                    val post = Post(id!!, caption!!, postImg!!)
+                    post.uid = userId!!
+                    post.fullname = fullname!!
+                    post.userImg = userImg!!
+                    post.currentDate = currentDate!!
+                    posts.add(post)
+                }
+                handler.onSuccess(posts)
+            } else {
+                handler.onError(it.exception!!)
+            }
+        }
+    }
+
+    fun loadPosts(uid: String, handler: DBPostsHandler) {
+        val reference = database.collection(USER_PATH).document(uid).collection(POST_PATH)
+        reference.get().addOnCompleteListener {
+            val posts = ArrayList<Post>()
+            if (it.isSuccessful) {
+                for (document in it.result!!) {
+                    val id = document.getString("id")
+                    val caption = document.getString("caption")
+                    val postImg = document.getString("postImg")
+                    val fullname = document.getString("fullname")
+                    val userImg = document.getString("userImg")
+                    val currentDate = document.getString("currentDate")
+
+                    val post = Post(id!!, caption!!, postImg!!)
+                    post.uid = uid
+                    post.fullname = fullname!!
+                    post.userImg = userImg!!
+                    post.currentDate = currentDate!!
+                    posts.add(post)
+                }
+                handler.onSuccess(posts)
             } else {
                 handler.onError(it.exception!!)
             }

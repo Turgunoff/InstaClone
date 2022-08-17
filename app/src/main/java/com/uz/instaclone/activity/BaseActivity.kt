@@ -15,6 +15,7 @@ import com.uz.instaclone.R
 open class BaseActivity : AppCompatActivity() {
     lateinit var context: Context
     var progressDialog: AlertDialog? = null
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         context = this
