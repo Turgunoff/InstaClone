@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uz.instaclone.R
@@ -37,6 +36,12 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        if (isVisibleToUser && feeds.size > 0)
+            loadMyFeeds()
+    }
+
     private fun initViews(view: View) {
         iv_camera = view.findViewById(R.id.iv_camera)
         iv_camera.setOnClickListener {
@@ -53,7 +58,7 @@ class HomeFragment : BaseFragment() {
         val uid = AuthManager.currentUser()!!.uid
         DBManager.loadFeeds(uid, object : DBPostsHandler {
             override fun onSuccess(posts: ArrayList<Post>) {
-                dissmisLoading()
+                dismissLoading()
                 feeds.clear()
                 feeds.addAll(posts)
                 refreshAdapter(feeds)

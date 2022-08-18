@@ -1,5 +1,6 @@
 package com.uz.instaclone.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,29 @@ class SearchAdapter(var fragment: SearchFragment, var items: ArrayList<User>) : 
                 .placeholder(R.drawable.ic_person)
                 .error(R.drawable.ic_person)
                 .into(holder.iv_profile)
+
+            val tv_follow = holder.tv_follow
+            tv_follow.setOnClickListener {
+                if (!user.isFollowed) {
+                    tv_follow.text = fragment.getString(R.string.str_following)
+                    tv_follow.setTextColor(Color.BLACK)
+                    tv_follow.setBackgroundResource(R.drawable.following_click)
+                } else {
+                    tv_follow.text = fragment.getString(R.string.str_follow)
+                    tv_follow.setTextColor(Color.WHITE)
+                    tv_follow.setBackgroundResource(R.drawable.textview_rounder_corners)
+                }
+                fragment.followOrUnFollow(user)
+            }
+            if (!user.isFollowed) {
+                tv_follow.text = fragment.getString(R.string.str_follow)
+                tv_follow.setTextColor(Color.WHITE)
+                tv_follow.setBackgroundResource(R.drawable.textview_rounder_corners)
+            } else {
+                tv_follow.text = fragment.getString(R.string.str_following)
+                tv_follow.setTextColor(Color.BLACK)
+                tv_follow.setBackgroundResource(R.drawable.following_click)
+            }
         }
     }
 

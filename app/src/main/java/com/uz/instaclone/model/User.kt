@@ -13,6 +13,7 @@ class User {
     var password: String = ""
     var userImg: String = ""
 
+    var isFollowed: Boolean = false
 
     constructor(fullName: String, email: String) {
         this.email = email

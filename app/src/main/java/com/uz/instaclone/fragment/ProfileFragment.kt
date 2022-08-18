@@ -21,10 +21,10 @@ import com.uz.instaclone.manager.DBManager
 import com.uz.instaclone.manager.StorageManager
 import com.uz.instaclone.manager.handler.DBPostsHandler
 import com.uz.instaclone.manager.handler.DBUserHandler
+import com.uz.instaclone.manager.handler.DBUsersHandler
 import com.uz.instaclone.manager.handler.StorageHandler
 import com.uz.instaclone.model.Post
 import com.uz.instaclone.model.User
-import com.uz.instaclone.utils.Logger
 
 /**
  * This is the Profile page, where profile settings can be made
@@ -39,6 +39,8 @@ class ProfileFragment : BaseFragment() {
     lateinit var tv_fullname: TextView
     lateinit var tv_email: TextView
     lateinit var tv_posts: TextView
+    lateinit var tv_following: TextView
+    lateinit var tv_followers: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +59,8 @@ class ProfileFragment : BaseFragment() {
         tv_fullname = view.findViewById(R.id.tv_fullname)
         tv_email = view.findViewById(R.id.tv_email)
         tv_posts = view.findViewById(R.id.tv_posts)
+        tv_following = view.findViewById(R.id.tv_following)
+        tv_followers = view.findViewById(R.id.tv_followers)
 
         logOut = view.findViewById(R.id.logOut)
         rv_profile.layoutManager = GridLayoutManager(activity, 2)
@@ -71,6 +75,31 @@ class ProfileFragment : BaseFragment() {
 
         loadUserInfo()
         loadMyPosts()
+        loadMyFollowing()
+        loadMyFollowers()
+    }
+
+    private fun loadMyFollowing() {
+        val uid = AuthManager.currentUser()!!.uid
+        DBManager.loadFollowing(uid, object : DBUsersHandler {
+            override fun onSuccess(users: ArrayList<User>) {
+                tv_following.text = users.size.toString()
+            }
+            override fun onError(e: Exception) {
+            }
+        })
+    }
+
+    private fun loadMyFollowers() {
+        val uid = AuthManager.currentUser()!!.uid
+        DBManager.loadFollowers(uid, object : DBUsersHandler {
+            override fun onSuccess(users: ArrayList<User>) {
+                tv_followers.text = users.size.toString()
+            }
+
+            override fun onError(e: Exception) {
+            }
+        })
     }
 
     private fun loadMyPosts() {
@@ -150,7 +179,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun refreshAdapter(items: ArrayList<Post>) {
-        val adadpter = ProfileAdapter(this, items)
-        rv_profile.adapter = adadpter
+        val adapter = ProfileAdapter(this, items)
+        rv_profile.adapter = adapter
     }
 }

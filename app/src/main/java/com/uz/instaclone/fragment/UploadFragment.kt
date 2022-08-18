@@ -23,7 +23,6 @@ import com.uz.instaclone.manager.handler.StorageHandler
 import com.uz.instaclone.model.Post
 import com.uz.instaclone.model.User
 import com.uz.instaclone.utils.Utils
-import kotlinx.android.synthetic.main.fragment_upload.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,6 +32,7 @@ import kotlin.collections.ArrayList
  * This is the Upload page, where you can upload images and videos to your page
  */
 class UploadFragment : BaseFragment() {
+
 
     lateinit var fl_photo: FrameLayout
     lateinit var iv_photo: ImageView
@@ -167,7 +167,7 @@ class UploadFragment : BaseFragment() {
     private fun storeFeedToDB(post: Post) {
         DBManager.storeFeeds(post, object : DBPostHandler {
             override fun onSuccess(post: Post) {
-                dissmisLoading()
+                dismissLoading()
                 resetAll()
                 listener!!.scrollToHome()
             }

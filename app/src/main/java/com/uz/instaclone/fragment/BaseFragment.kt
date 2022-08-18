@@ -1,7 +1,6 @@
 package com.uz.instaclone.fragment
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
@@ -36,7 +35,7 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    protected fun dissmisLoading() {
+    protected fun dismissLoading() {
         if (progressDialog != null && progressDialog!!.isShowing) {
             progressDialog!!.dismiss()
         }
@@ -44,6 +43,6 @@ open class BaseFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        dissmisLoading()
+        dismissLoading()
     }
 }

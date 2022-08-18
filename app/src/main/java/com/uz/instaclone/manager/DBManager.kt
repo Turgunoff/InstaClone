@@ -1,10 +1,7 @@
 package com.uz.instaclone.manager
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uz.instaclone.manager.handler.DBPostHandler
-import com.uz.instaclone.manager.handler.DBPostsHandler
-import com.uz.instaclone.manager.handler.DBUserHandler
-import com.uz.instaclone.manager.handler.DBUsersHandler
+import com.uz.instaclone.manager.handler.*
 import com.uz.instaclone.model.Post
 import com.uz.instaclone.model.User
 
@@ -22,6 +19,82 @@ private var FOLLOWERS_PATH = "followers"
 
 object DBManager {
     private var database = FirebaseFirestore.getInstance()
+
+    fun followUser(me: User, to: User, handler: DBFollowHandler) {
+        // User(To) is in my following
+        database.collection(USER_PATH).document(me.uid).collection(FOLLOWING_PATH).document(to.uid)
+            .set(to).addOnSuccessListener {
+                // User(Me) is in his/her followers
+                database.collection(USER_PATH).document(to.uid).collection(FOLLOWERS_PATH)
+                    .document(me.uid)
+                    .set(me).addOnSuccessListener {
+                        handler.onSuccess(true)
+                    }.addOnFailureListener {
+                        handler.onError(it)
+                    }
+            }.addOnFailureListener {
+                handler.onError(it)
+            }
+    }
+
+    fun loadFollowing(uid: String, handler: DBUsersHandler) {
+        database.collection(USER_PATH).document(uid).collection(FOLLOWING_PATH).get()
+            .addOnCompleteListener {
+                val users = ArrayList<User>()
+                if (it.isSuccessful) {
+                    for (document in it.result!!) {
+                        val uid = document.getString("uid")
+                        val fullname = document.getString("fullname")
+                        val email = document.getString("email")
+                        val userImg = document.getString("userImg")
+                        val user = User(fullname!!, email!!, userImg!!)
+                        user.uid = uid!!
+                        users.add(user)
+                    }
+                    handler.onSuccess(users)
+                } else {
+                    handler.onError(it.exception!!)
+                }
+            }
+    }
+
+    fun loadFollowers(uid: String, handler: DBUsersHandler) {
+        database.collection(USER_PATH).document(uid).collection(FOLLOWERS_PATH).get()
+            .addOnCompleteListener {
+                val users = ArrayList<User>()
+                if (it.isSuccessful) {
+                    for (document in it.result!!) {
+                        val uid = document.getString("uid")
+                        val fullname = document.getString("fullname")
+                        val email = document.getString("email")
+                        val userImg = document.getString("userImg")
+                        val user = User(fullname!!, email!!, userImg!!)
+                        user.uid = uid!!
+                        users.add(user)
+                    }
+                    handler.onSuccess(users)
+                } else {
+                    handler.onError(it.exception!!)
+                }
+            }
+    }
+
+    fun unFollowUser(me: User, to: User, handler: DBFollowHandler) {
+        // User(To) is in my following
+        database.collection(USER_PATH).document(me.uid).collection(FOLLOWING_PATH).document(to.uid)
+            .delete().addOnSuccessListener {
+                // User(Me) is in his/her followers
+                database.collection(USER_PATH).document(to.uid).collection(FOLLOWERS_PATH)
+                    .document(me.uid)
+                    .delete().addOnSuccessListener {
+                        handler.onSuccess(true)
+                    }.addOnFailureListener {
+                        handler.onError(it)
+                    }
+            }.addOnFailureListener {
+                handler.onError(it)
+            }
+    }
 
     fun storeUser(user: User, handler: DBUserHandler) {
         database.collection(USER_PATH).document(user.uid).set(user).addOnSuccessListener {
@@ -149,5 +222,43 @@ object DBManager {
                 handler.onError(it.exception!!)
             }
         }
+    }
+
+    fun storePostsToMyFeed(uid: String, to: User) {
+        loadPosts(to.uid, object : DBPostsHandler {
+            override fun onSuccess(posts: ArrayList<Post>) {
+                for (post in posts) {
+                    storeFeed(uid, post)
+                }
+            }
+
+            override fun onError(e: Exception) {
+
+            }
+        })
+    }
+
+    fun storeFeed(uid: String, post: Post) {
+        val reference = database.collection(USER_PATH).document(uid).collection(FEED_PATH)
+        reference.document(post.id).set(post)
+    }
+
+    fun removePostsFromMyFeed(uid: String, to: User) {
+        loadPosts(to.uid, object : DBPostsHandler {
+            override fun onSuccess(posts: ArrayList<Post>) {
+                for (post in posts) {
+                    removeFeed(uid, post)
+                }
+            }
+
+            override fun onError(e: Exception) {
+
+            }
+        })
+    }
+
+    fun removeFeed(uid: String, post: Post) {
+        val reference = database.collection(USER_PATH).document(uid).collection(FEED_PATH)
+        reference.document(post.id).delete()
     }
 }

@@ -15,20 +15,20 @@ import com.uz.instaclone.model.Post
 
 class HomeAdapter(var fragment: HomeFragment, var items: ArrayList<Post>) : BaseAdapter() {
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_post_home, parent, false)
         return PostViewHolder(view)
     }
 
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val post: Post = items[position]
         if (holder is PostViewHolder) {
-            var iv_post = holder.iv_post
+            val iv_post = holder.iv_post
             val tv_fullname = holder.tv_fullname
             val iv_profile = holder.iv_profile
             val tv_caption = holder.tv_caption
